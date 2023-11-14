@@ -56,7 +56,7 @@ export const updateById = async (req, res, next) => {
   try {
     const { error } = contactUpdateSchema.validate(req.body);
     if (error) {
-      throw HttpError(400, "missing fields");
+      throw HttpError(400, error.message);
     }
     const { contactId } = req.params;
     const result = await contactsSevice.updateContact(contactId, req.body);
