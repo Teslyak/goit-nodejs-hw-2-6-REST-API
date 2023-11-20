@@ -1,5 +1,4 @@
 import { Contact } from "../models/contacts.js";
-import * as contactsSevice from "../models/contacts.js";
 import { ctrlWrapper } from "../decorators/index.js";
 import { HttpError } from "../helpers/index.js";
 

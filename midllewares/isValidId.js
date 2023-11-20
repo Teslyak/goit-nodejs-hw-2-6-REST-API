@@ -3,7 +3,6 @@ import { isValidObjectId } from "mongoose";
 
 const isValidId = (req, res, next) => {
   const id = req.params.contactId;
-  console.log(id);
   if (!isValidObjectId(id)) {
     return next(HttpError(404, `${id} is not valid id `));
   }
