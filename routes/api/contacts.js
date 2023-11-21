@@ -10,7 +10,7 @@ import {
 
 const router = express.Router();
 
-router.get("/", isValidId, contactsController.getAll);
+router.get("/", contactsController.getAll);
 
 router.get("/:contactId", isValidId, contactsController.getById);
 
