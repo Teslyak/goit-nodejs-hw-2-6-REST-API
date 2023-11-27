@@ -2,7 +2,9 @@ import { Schema, model } from "mongoose";
 import { handleSaveErr, preUpdate } from "./hooks.js";
 import Joi from "joi";
 
-const userSchama = new Schema(
+const emailRegexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+const userSchema = new Schema(
   {
     password: {
       type: String,
@@ -18,7 +20,27 @@ const userSchama = new Schema(
       enum: ["starter", "pro", "business"],
       default: "starter",
     },
+
     token: String,
   },
+
   { versionKey: false, timestamps: true }
 );
+
+userSchema.post("save", handleSaveErr);
+userSchema.post("findOneAndUpdate", handleSaveErr);
+userSchema.pre("findOneAndUpdate", preUpdate);
+
+export const userSingupSchema = Joi.object({
+  email: Joi.string().pattern(emailRegexp).required(),
+  password: Joi.string().required(),
+});
+
+export const userSigninSchema = Joi.object({
+  email: Joi.string().pattern(emailRegexp).required(),
+  password: Joi.string().required(),
+});
+
+const User = model("user", userSchema);
+
+export default User;

@@ -1,5 +1,9 @@
 import express from "express";
-import { isEmptyBody, isValidId } from "../../midllewares/index.js";
+import {
+  authenticate,
+  isEmptyBody,
+  isValidId,
+} from "../../midllewares/index.js";
 import validateBody from "../../decorators/validaterBody.js";
 import contactsController from "../../controllers/contacts-controller.js";
 import {
@@ -9,7 +13,7 @@ import {
 } from "../../models/contacts.js";
 
 const router = express.Router();
-
+router.use(authenticate);
 router.get("/", contactsController.getAll);
 
 router.get("/:contactId", isValidId, contactsController.getById);
