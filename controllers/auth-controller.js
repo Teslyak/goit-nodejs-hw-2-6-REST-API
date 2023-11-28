@@ -40,7 +40,7 @@ const singin = async (req, res, next) => {
   };
 
   const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "23h" });
-
+  await User.findByIdAndUpdate(user._id, { token });
   res.json({
     token,
     user: {
@@ -49,7 +49,36 @@ const singin = async (req, res, next) => {
     },
   });
 };
+
+const getCurrent = (req, res) => {
+  const { email, subscription } = req.user;
+  res.json({
+    email,
+    subscription,
+  });
+};
+
+const singout = async (req, res) => {
+  const { _id } = req.user;
+  await User.findByIdAndUpdate(_id, { token: "" });
+  res.status(204).json();
+};
+
+const userUpdSubscr = async (req, res) => {
+  const { _id: owner } = req.user;
+  const { subscription } = req.body;
+  const result = await User.findByIdAndUpdate(
+    owner,
+    { subscription },
+    { new: true }
+  );
+  res.json(result);
+};
+
 export default {
   singup: ctrlWrapper(singup),
   singin: ctrlWrapper(singin),
+  getCurrent: ctrlWrapper(getCurrent),
+  singout: ctrlWrapper(singout),
+  userUpdSubscr: ctrlWrapper(userUpdSubscr),
 };
