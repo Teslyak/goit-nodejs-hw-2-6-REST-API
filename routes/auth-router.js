@@ -1,5 +1,5 @@
 import express from "express";
-import { authenticate, isEmptyBody } from "../midllewares/index.js";
+import { authenticate, isEmptyBody, upload } from "../midllewares/index.js";
 import validateBody from "../decorators/validaterBody.js";
 import {
   userSingupSchema,
@@ -29,5 +29,11 @@ authRouter.patch(
   authenticate,
   validateBody(userUpdSubscrSchema),
   authController.userUpdSubscr
+);
+authRouter.patch(
+  "/avatars",
+  authenticate,
+  upload.single("avatar"),
+  authController.updAvatar
 );
 export default authRouter;
