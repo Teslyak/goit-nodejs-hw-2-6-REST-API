@@ -5,6 +5,7 @@ import {
   userSingupSchema,
   userSigninSchema,
   userUpdSubscrSchema,
+  userEmailSchema,
 } from "../models/Users.js";
 import authController from "../controllers/auth-controller.js";
 
@@ -14,6 +15,14 @@ authRouter.post(
   "/register",
   validateBody(userSingupSchema),
   authController.singup
+);
+
+authRouter.get("/verify/:verificationToken", authController.verify);
+authRouter.post(
+  "/verify",
+  isEmptyBody,
+  validateBody(userEmailSchema),
+  authController.resendVerify
 );
 
 authRouter.post(
